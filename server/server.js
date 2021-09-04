@@ -37,21 +37,22 @@ const middleware = [
 
 middleware.forEach((it) => server.use(it))
 
-server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
-  const { page } = req.params
-  const dummyGoods = `${__dirname}/data/data.json`
+server.get(['/api/v1/goods/', '/api/v1/goods/:itemsPerPage/:page'], (req, res) => {
+  const { itemsPerPage, page } = req.params
+  const pathGoods = `${__dirname}/data/data.json`
+
+  console.log(itemsPerPage)
   console.log(page)
-  console.log(dummyGoods)
-  try {
-    readFile(dummyGoods, { encoding: 'utf8' })
-      .then((text) => {
-        const goods = JSON.parse(text)
-        res.json(goods)
-      })
-  }
-  catch (err) {
-    res.json({ status: 'error', message: err })
-  }
+
+  readFile(pathGoods, { encoding: 'utf8' })
+    .then((text) => {
+      const goods = JSON.parse(text)
+      res.json({ status: 'ok', data: goods })
+    })
+    .catch((err) => {
+      console.log('Something weong...')
+      res.json({ status: 'error', message: err })
+    })
 })
 
 server.use('/api/', (req, res) => {
