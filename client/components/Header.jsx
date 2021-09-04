@@ -12,11 +12,9 @@ const Header = () => (
       <WigetBasket />
       <WigetСurrency />
     </div>
-    <div className="flex justify-center	">
-      <WigetSorting/>
+    <div className='flex justify-center'>
+      <WigetSorting />
     </div>
-
-
   </div>
 )
 

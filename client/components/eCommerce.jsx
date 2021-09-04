@@ -7,7 +7,7 @@ const eCommerce = () => (
     <Head title="Catalog" />
     <div className="h-100 w-screen flex flex-col items-center justify-center bg-teal-lightest font-sans">
       <Header/>
-      All will be here!
+      Goods will be here!
     </div>
   </div>
 )

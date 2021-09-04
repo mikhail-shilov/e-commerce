@@ -9,6 +9,9 @@ import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
+const { readFile } = require('fs').promises
+
+
 require('colors')
 
 let Root
@@ -33,6 +36,23 @@ const middleware = [
 ]
 
 middleware.forEach((it) => server.use(it))
+
+server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
+  const { page } = req.params
+  const dummyGoods = `${__dirname}/data/data.json`
+  console.log(page)
+  console.log(dummyGoods)
+  try {
+    readFile(dummyGoods, { encoding: 'utf8' })
+      .then((text) => {
+        const goods = JSON.parse(text)
+        res.json(goods)
+      })
+  }
+  catch (err) {
+    res.json({ status: 'error', message: err })
+  }
+})
 
 server.use('/api/', (req, res) => {
   res.status(404)
@@ -70,7 +90,7 @@ if (config.isSocketsEnabled) {
   const echo = sockjs.createServer()
   echo.on('connection', (conn) => {
     connections.push(conn)
-    conn.on('data', async () => {})
+    conn.on('data', async () => { })
 
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)
