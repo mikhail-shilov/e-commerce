@@ -4,6 +4,7 @@ import cors from 'cors'
 import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
+import axios from 'axios'
 
 import cookieParser from 'cookie-parser'
 import config from './config'
@@ -52,6 +53,13 @@ server.get(['/api/v1/goods/', '/api/v1/goods/:itemsPerPage/:page'], (req, res) =
     .catch((err) => {
       console.log('Something weong...')
       res.json({ status: 'error', message: err })
+    })
+})
+
+server.get('/api/v1/rate', (req, res) => {
+  axios.get('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD')
+    .then((data) => {
+      res.json({ status: 'ok', data: data.data })
     })
 })
 
