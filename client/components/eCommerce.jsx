@@ -6,8 +6,6 @@ import Header from './Header'
 
 const ECommerce = () => {
   const test = useSelector((state) => state.goods.test)
-  console.log(test)
-
   return (
     <div>
       <Head title="Catalog" />
@@ -15,7 +13,6 @@ const ECommerce = () => {
         <Header />
         Goods will be here!
         {test}
-
       </div>
     </div>
   )
