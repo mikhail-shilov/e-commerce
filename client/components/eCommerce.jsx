@@ -2,14 +2,16 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import axios from 'axios'
 
+import { updateRates } from '../redux/reducers/currency'
+import { updateGoods } from '../redux/reducers/goods'
+
 import Head from './head'
 import Header from './Header'
-import { updateRates } from '../redux/reducers/currency'
+import Catalog from './Catalog'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
-  const rates = useSelector((state) => state.currency.rates)
-  const activeCurrency = useSelector((state) => state.currency.activeCurrency)
+  const goods = useSelector((state) => state.goods.goods)
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -17,15 +19,19 @@ const ECommerce = () => {
     })
   }, [])
 
-  const test = useSelector((state) => state.goods.test)
+  useEffect(() => {
+    axios.get('/api/v1/goods').then((result) => {
+      dispatch(updateGoods(result.data.data))
+      console.log(goods)
+    })
+  }, [])
+
   return (
     <div>
       <Head title="Catalog" />
       <div className="h-100 w-screen flex flex-col items-center justify-center bg-teal-lightest font-sans">
         <Header />
-        Goods will be here! <br />
-        Price in {activeCurrency}: {(test * rates[activeCurrency]).toFixed(2)}<br />
-        {rates[activeCurrency]}
+        <Catalog />
       </div>
     </div>
   )
