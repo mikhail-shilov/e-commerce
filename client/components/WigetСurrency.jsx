@@ -1,12 +1,12 @@
 import React from 'react'
 import { useSelector,useDispatch } from 'react-redux'
-import { USD, EUR, CAD, updateCurrency } from '../redux/reducers/currency'
+import { USD, EUR, CAD, RUB, updateCurrency } from '../redux/reducers/currency'
 
 
 const WigetСurrency = () => {
-  const activeCurrency = useSelector((state) => state.currency.activeCurrency)
-
   const dispatch = useDispatch()
+
+  const activeCurrency = useSelector((state) => state.currency.activeCurrency)
   const setCurrency = (currency) => {
     dispatch(updateCurrency(currency))
   }
@@ -17,6 +17,7 @@ const WigetСurrency = () => {
       <button type='button' onClick={() => { setCurrency(USD) }}>{USD}</button>
       <button type='button' onClick={() => { setCurrency(EUR) }}>{EUR}</button>
       <button type='button' onClick={() => { setCurrency(CAD) }}>{CAD}</button>
+      <button type='button' onClick={() => { setCurrency(RUB) }}>{RUB}</button>
     </div>)
 }
 

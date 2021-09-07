@@ -57,7 +57,7 @@ server.get(['/api/v1/goods/', '/api/v1/goods/:itemsPerPage/:page'], (req, res) =
 })
 
 server.get('/api/v1/rate', (req, res) => {
-  axios.get('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD')
+  axios.get('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD,RUB')
     .then((data) => {
       res.json({ status: 'ok', data: data.data })
     })

@@ -1,7 +1,9 @@
 export const USD = 'USD'
 export const EUR = 'EUR'
 export const CAD = 'CAD'
+export const RUB = 'RUB'
 const CHANGE_CURRENCY = 'CHANGE_CURRENCY'
+const UPDATE_RATES = 'UPDATE_RATES'
 
 
 const initialState = {
@@ -10,7 +12,8 @@ const initialState = {
   rates: {
     [USD]: 1,
     [EUR]: null,
-    [CAD]: null
+    [CAD]: null,
+    [RUB]: null
   },
 }
 
@@ -22,6 +25,12 @@ export default (state = initialState, action) => {
         activeCurrency: action.currency
       }
     }
+    case UPDATE_RATES: {
+      return {
+        ...state,
+        rates: action.rates
+      }
+    }
     default:
       return state
   }
@@ -29,4 +38,8 @@ export default (state = initialState, action) => {
 
 export function updateCurrency(currency) {  
   return { type: CHANGE_CURRENCY, currency }  
+}  
+
+export function updateRates(rates) {  
+  return { type: UPDATE_RATES, rates }  
 }  
