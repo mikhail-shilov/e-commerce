@@ -1,9 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import WigetBasket from './WigetBasket'
-import WigetSorting from './WigetSorting'
-import WigetСurrency from './WigetСurrency'
+import WigetBasket from './header/WigetBasket'
+import WigetSorting from './header/WigetSorting'
+import WigetСurrency from './header/WigetСurrency'
 
 const Header = () => (
   <div className="header flex flex-col h-100 w-full border px-14">

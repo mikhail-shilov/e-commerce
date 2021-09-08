@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
 
 import { updateRates } from '../redux/reducers/currency'
@@ -11,7 +11,6 @@ import Catalog from './Catalog'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
-  const goods = useSelector((state) => state.goods.goods)
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -22,7 +21,6 @@ const ECommerce = () => {
   useEffect(() => {
     axios.get('/api/v1/goods').then((result) => {
       dispatch(updateGoods(result.data.data))
-      console.log(goods)
     })
   }, [])
 

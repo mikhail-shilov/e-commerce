@@ -51,7 +51,7 @@ server.get(['/api/v1/goods/', '/api/v1/goods/:itemsPerPage/:page'], (req, res) =
       res.json({ status: 'ok', data: goods })
     })
     .catch((err) => {
-      console.log('Something weong...')
+      console.log('Something wrong...')
       res.json({ status: 'error', message: err })
     })
 })
@@ -60,6 +60,23 @@ server.get('/api/v1/rate', (req, res) => {
   axios.get('https://api.exchangerate.host/latest?base=USD&symbols=USD,EUR,CAD,RUB')
     .then((data) => {
       res.json({ status: 'ok', data: data.data })
+    })
+})
+
+// recive array of { id: [count] } return total price
+server.post('/api/v1/total', (req, res) => {
+  const pathGoods = `${__dirname}/data/data.json`
+
+  readFile(pathGoods, { encoding: 'utf8' })
+    .then((text) => {
+      const goodsInBusket = JSON.parse(text).filter((item) => (Object.keys(req.body.items).includes(item.id)))
+      const totalOfBasket = goodsInBusket.reduce((total, good) => (
+        total + good.price * req.body.items[good.id]), 0)
+      res.json({ status: 'ok', data: totalOfBasket })
+    })
+    .catch((err) => {
+      console.log('Something wrong...')
+      res.json({ status: 'error', message: err })
     })
 })
 
