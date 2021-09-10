@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { updateRates } from '../redux/reducers/currency'
-import { updateGoods } from '../redux/reducers/goods'
+import { updateGoods, updateTotal } from '../redux/reducers/goods'
 
 import Head from './head'
 import Header from './Header'
@@ -11,6 +11,8 @@ import Catalog from './Catalog'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
+  const basket = useSelector((state) => state.goods.basket)
+
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -23,6 +25,14 @@ const ECommerce = () => {
       dispatch(updateGoods(result.data.data))
     })
   }, [])
+
+  useEffect(() => {
+    axios.post('/api/v1/total', { items: basket }).then((result) => {
+      dispatch(updateTotal(result.data.data))
+      console.log(basket)
+      console.log(result.data.data)
+    })
+  }, [basket])
 
   return (
     <div>
