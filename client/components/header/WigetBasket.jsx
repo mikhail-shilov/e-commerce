@@ -11,7 +11,7 @@ const WigetBasket = () => {
 
   return (
     <div>
-      <Link to='/basket'>{Object.keys(basket).length} товаров, на сумму {(total * rates[activeCurrency]).toFixed(2)}</Link>
+      <Link to='/basket'>{Object.keys(basket).length} товаров, на сумму {(total * rates[activeCurrency]).toFixed(2)} {activeCurrency}</Link>
     </div>
   )
 }
