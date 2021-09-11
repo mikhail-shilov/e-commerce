@@ -11,8 +11,11 @@ const GoodCard = (props) => {
     dispatch(addBasket(props.id))
   }
   return (
-    <div className="w-1/4	flex flex-col border text-center">
-      <img src={props.image} alt='props.title' />
+    <div className="w-1/4	flex flex-col border text-center pb-4">
+      <img
+        className='w-full h-44 object-cover '
+        src={props.image}
+        alt='props.title' />
       <h3>{props.title}</h3>
       <div>Price: {props.price}</div>
       <button
