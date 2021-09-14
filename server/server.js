@@ -63,8 +63,8 @@ server.get('/api/v1/rate', (req, res) => {
     })
 })
 
-// recive array of { id: [count] } return total price
-server.post('/api/v1/total', (req, res) => {
+// recive array of { id: [count] } return info about goods in basket and total price
+server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
   const pathGoods = `${__dirname}/data/data.json`
 
   readFile(pathGoods, { encoding: 'utf8' })
@@ -72,7 +72,7 @@ server.post('/api/v1/total', (req, res) => {
       const goodsInBusket = JSON.parse(text).filter((item) => (Object.keys(req.body.items).includes(item.id)))
       const totalOfBasket = goodsInBusket.reduce((total, good) => (
         total + good.price * req.body.items[good.id]), 0)
-      res.json({ status: 'ok', data: totalOfBasket })
+      res.json({ status: 'ok', goods: goodsInBusket, total: totalOfBasket, data: totalOfBasket })
     })
     .catch((err) => {
       console.log('Something wrong...')
