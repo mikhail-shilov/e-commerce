@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { updateRates } from '../redux/reducers/currency'
-import { updateGoods, updateTotal } from '../redux/reducers/goods'
+import { updateBasket, updateGoods } from '../redux/reducers/goods'
 
 import Head from './head'
 import Header from './Header'
@@ -11,7 +11,7 @@ import Catalog from './Catalog'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
-  const basket = useSelector((state) => state.goods.basket)
+  const basketLocal = useSelector((state) => state.goods.basketLocal)
 
 
   useEffect(() => {
@@ -27,12 +27,14 @@ const ECommerce = () => {
   }, [])
 
   useEffect(() => {
-    axios.post('/api/v1/total', { items: basket }).then((result) => {
-      dispatch(updateTotal(result.data.data))
-      console.log(basket)
+    axios.post('/api/v1/basket', { items: basketLocal }).then((result) => {
+      console.log('basketLocal:')
+      console.log(basketLocal)
+      dispatch(updateBasket(result.data.data))
+      console.log('basket:')
       console.log(result.data.data)
     })
-  }, [basket])
+  }, [basketLocal])
 
   return (
     <div>

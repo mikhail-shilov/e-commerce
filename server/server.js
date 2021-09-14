@@ -69,10 +69,22 @@ server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
 
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
-      const goodsInBusket = JSON.parse(text).filter((item) => (Object.keys(req.body.items).includes(item.id)))
+      const basket = req.body.items
+      const goodsInBusket = JSON.parse(text)
+        .filter((item) => (Object.keys(req.body.items).includes(item.id)))
+        .map(item => ({ ...item, quanity: basket[item.id] }))
+      const quanityInBasket = Object.values(basket).reduce((sum, quanityGood) => sum + quanityGood, 0)
       const totalOfBasket = goodsInBusket.reduce((total, good) => (
-        total + good.price * req.body.items[good.id]), 0)
-      res.json({ status: 'ok', goods: goodsInBusket, total: totalOfBasket, data: totalOfBasket })
+        total + good.price * basket[good.id]), 0)
+
+      res.json({
+        status: 'ok',
+        data: {
+          goods: goodsInBusket,
+          quanity: quanityInBasket,
+          total: totalOfBasket
+        }
+      })
     })
     .catch((err) => {
       console.log('Something wrong...')

@@ -1,15 +1,18 @@
 const UPDATE_GOODS = 'UPDATE_GOODS'
 const ADD_BASKET = 'ADD_BASKET'
 const REMOVE_BASKET = 'REMOVE_BASKET'
-const UPDATE_TOTAL = 'UPDATE_TOTAL'
-
+const UPDATE_BASKET = 'UPDATE_BASKET'
 
 const initialState = {
   goodsOnPage: 12,
   currentPage: 1,
   goods: [],
-  basket: [], // { someGood: %basePrice% }
-  total: 0
+  basketLocal: {}, // { goodId: %quanity% }
+  basket: {
+    goods: [],
+    quanity: 0,
+    total: 0
+  } // response of server
 }
 
 export default (state = initialState, action) => {
@@ -21,22 +24,22 @@ export default (state = initialState, action) => {
       }
     }
     case ADD_BASKET: {
-      const quanity = ((typeof state.basket[action.id] === 'undefined')? 1 : (state.basket[action.id] + 1))
+      const quanity = ((typeof state.basketLocal[action.id] === 'undefined') ? 1 : (state.basketLocal[action.id] + 1))
       return {
         ...state,
-        basket: { ...state.basket, [action.id]: quanity }
+        basketLocal: { ...state.basketLocal, [action.id]: quanity }
       }
     }
     case REMOVE_BASKET: {
       return {
         ...state,
-        basket: state.basket.filter(good => good.id !== action.goodId)
+        basketLocal: state.basketLocal.filter(good => good.id !== action.id)
       }
     }
-    case UPDATE_TOTAL: {
+    case UPDATE_BASKET: {
       return {
         ...state,
-        total: action.total
+        basket: action.basket
       }
     }
 
@@ -51,6 +54,6 @@ export function updateGoods(goods) {
 export function addBasket(id) {
   return { type: ADD_BASKET, id }
 }
-export function updateTotal(total) {
-  return { type: UPDATE_TOTAL, total }
+export function updateBasket(basket) {
+  return { type: UPDATE_BASKET, basket }
 }
