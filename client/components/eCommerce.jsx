@@ -33,6 +33,8 @@ const ECommerce = () => {
       dispatch(updateBasket(result.data.data))
       console.log('basket:')
       console.log(result.data.data)
+      console.log('basketLocal')
+      console.log(basketLocal)
     })
   }, [basketLocal])
 
