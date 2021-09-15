@@ -2,12 +2,23 @@ const UPDATE_GOODS = 'UPDATE_GOODS'
 const ADD_GOOD = 'ADD_GOOD'
 const REMOVE_GOOD = 'REMOVE_GOOD'
 const UPDATE_BASKET = 'UPDATE_BASKET'
+const CHANGE_PAGE = 'CHANGE_PAGE'
 
 const initialState = {
-  goodsOnPage: 12,
+  catalog: {
+    goods: [],
+    pages: null,
+    page: 1,
+    onPage: 12
+  },
+
+  onPage: 12,
   currentPage: 1,
   goods: [],
+  pages: 0,
+
   basketLocal: {}, // { goodId: %quanity% }
+
   basket: {
     goods: [],
     quanity: 0,
@@ -20,7 +31,18 @@ export default (state = initialState, action) => {
     case UPDATE_GOODS: {
       return {
         ...state,
+        catalog: {
+          ...state.catalog,
+          goods: action.goods,
+          pages: action.pages
+        },
         goods: action.goods
+      }
+    }
+    case CHANGE_PAGE: {
+      return {
+        ...state,
+        catalog: { ...state.catalog, page: action.page }
       }
     }
     case ADD_GOOD: {
@@ -31,7 +53,7 @@ export default (state = initialState, action) => {
       }
     }
     case REMOVE_GOOD: {
-      const result = { ...state, basketLocal: {...state.basketLocal} }
+      const result = { ...state, basketLocal: { ...state.basketLocal } }
       if (state.basketLocal[action.id] > 1) {
         result.basketLocal[action.id] = state.basketLocal[action.id] - 1
       } else {
@@ -51,8 +73,8 @@ export default (state = initialState, action) => {
   }
 }
 
-export function updateGoods(goods) {
-  return { type: UPDATE_GOODS, goods }
+export function updateGoods(goods, pages) {
+  return { type: UPDATE_GOODS, goods, pages }
 }
 export function addBasket(id) {
   return { type: ADD_GOOD, id }

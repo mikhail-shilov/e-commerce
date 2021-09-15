@@ -38,17 +38,25 @@ const middleware = [
 
 middleware.forEach((it) => server.use(it))
 
-server.get(['/api/v1/goods/', '/api/v1/goods/:itemsPerPage/:page'], (req, res) => {
-  const { itemsPerPage, page } = req.params
+server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
+  const { page = 1 } = req.params
+  const { onpage = 20, sort, order } = req.query
   const pathGoods = `${__dirname}/data/data.json`
 
-  console.log(itemsPerPage)
-  console.log(page)
+  const startOfPage = Number(onpage) * (Number(page) - 1)
+
+  // const safeSorts = ['name', 'price']
+  // const safeOrders = ['asc', 'desc']
+
+  console.log(onpage)
+  console.log(`${page} ${sort} ${order}`)
 
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const goods = JSON.parse(text)
-      res.json({ status: 'ok', data: goods })
+      const pages = Math.ceil(goods.length / onpage)
+const goodsOnPage = goods.slice(startOfPage, startOfPage + Number(onpage))
+      res.json({ status: 'ok', data: {goods: goodsOnPage, pages }})
     })
     .catch((err) => {
       console.log('Something wrong...')

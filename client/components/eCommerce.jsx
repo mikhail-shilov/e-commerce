@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -14,8 +14,10 @@ import Basket from './Basket'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
+  const { page } = useParams()
   const basketLocal = useSelector((state) => state.goods.basketLocal)
-
+  console.log('page')
+  console.log(page)
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -24,10 +26,10 @@ const ECommerce = () => {
   }, [])
 
   useEffect(() => {
-    axios.get('/api/v1/goods').then((result) => {
-      dispatch(updateGoods(result.data.data))
+    axios.get(`/api/v1/goods/${page}`).then((result) => {
+      dispatch(updateGoods(result.data.data.goods, result.data.data.pages))
     })
-  }, [])
+  }, [page])
 
   useEffect(() => {
     axios.post('/api/v1/basket', { items: basketLocal }).then((result) => {
@@ -42,15 +44,17 @@ const ECommerce = () => {
   }, [basketLocal])
 
   return (
-    <div>
+    <div className='w-screen mx-auto'>
       <Head title="Catalog" />
-      <div className="h-100 w-screen flex flex-col items-center justify-center bg-teal-lightest font-sans">
+      <div className="h-100 w-full flex flex-col items-center justify-center bg-teal-lightest font-sans">
         <Header />
-        <Switch>
-          <Route exact path="/" component={Catalog} />
-          <Route exact path="/basket" component={Basket} />
-          <Route component={NotFound} />
-        </Switch>
+        <div className='max-w-screen-lg mx-auto'>
+          <Switch>
+            <Route exact path="/:page?" component={Catalog} />
+            <Route exact path="/basket" component={Basket} />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
       </div>
     </div>
   )

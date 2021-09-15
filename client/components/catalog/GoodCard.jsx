@@ -1,19 +1,15 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { addBasket, removeGood } from '../../redux/reducers/goods'
+import { addBasket } from '../../redux/reducers/goods'
 
 const GoodCard = (props) => {
   const dispatch = useDispatch()
 
+
   const buttonHandler = () => {
     console.log('Add basket!')
     dispatch(addBasket(props.id))
-  }
-
-  const buttonHandler2 = () => {
-    console.log('Remove basket!')
-    dispatch(removeGood(props.id))
   }
 
   return (
@@ -24,18 +20,14 @@ const GoodCard = (props) => {
         alt='props.title' />
       <h3>{props.title}</h3>
       <div>Price: {props.price}</div>
-      <button
-        className='border w-min mt-2 mx-auto px-4'
-        type='button'
-        onClick={buttonHandler}>
-        Add basket
-      </button>
-      <button
-        className='border w-min mt-2 mx-auto px-4'
-        type='button'
-        onClick={buttonHandler2}>
-        Remove basket
-      </button>
+      <div className='flex-grow flex items-end'>
+        <button
+          className='border text-sm w-24 mt-2 mx-auto py-2 px-2'
+          type='button'
+          onClick={buttonHandler}>
+          Buy {(props.quanity > 0) ? `(${props.quanity})` : ''}
+        </button>
+      </div>
     </div>
   )
 }

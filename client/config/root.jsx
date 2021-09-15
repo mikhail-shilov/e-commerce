@@ -20,7 +20,7 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route path="/" component={eCommerce} />
+            <Route path="/:page?" component={eCommerce} />
             <Route component={NotFound} />
           </Switch>
         </Startup>
