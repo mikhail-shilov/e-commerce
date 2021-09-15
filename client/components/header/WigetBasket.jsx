@@ -10,7 +10,7 @@ const WigetBasket = () => {
 
 
   return (
-    <div>
+    <div className='flex items-center'>
       <Link to='/basket'>{quanity} товаров, на сумму {(total * rates[activeCurrency]).toFixed(2)} {activeCurrency}</Link>
     </div>
   )

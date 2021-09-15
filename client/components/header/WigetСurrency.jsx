@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector,useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { USD, EUR, CAD, RUB, updateCurrency } from '../../redux/reducers/currency'
 
 
@@ -11,13 +11,28 @@ const WigetСurrency = () => {
     dispatch(updateCurrency(currency))
   }
 
+  const currencies = [USD, EUR, CAD, RUB]
+
+  const CurrencySelector = (props) => {
+    const { active, title } = props
+
+    const classes = `px-2 py-1 ${(active === title) && 'bg-gray-400'}`
+    return (
+      <button
+        className={classes}
+        type='button'
+        onClick={() => { setCurrency(title) }}
+      >
+        {title}
+      </button>
+    )
+  }
+
+  const selectors = currencies.map(item => <CurrencySelector active={activeCurrency} key={item} title={item} />)
+
   return (
-    <div className='flex border gap-4 px-1 ml-8 '>
-      <button type='button' >Now: {activeCurrency}!</button>
-      <button type='button' onClick={() => { setCurrency(USD) }}>{USD}</button>
-      <button type='button' onClick={() => { setCurrency(EUR) }}>{EUR}</button>
-      <button type='button' onClick={() => { setCurrency(CAD) }}>{CAD}</button>
-      <button type='button' onClick={() => { setCurrency(RUB) }}>{RUB}</button>
+    <div className='flex border ml-8'>
+      {selectors}
     </div>)
 }
 
