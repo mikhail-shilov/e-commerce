@@ -16,8 +16,6 @@ const GoodCard = (props) => {
     dispatch(removeGood(props.id))
   }
 
-
-
   return (
     <div className="w-1/4	flex flex-col border text-center pb-4">
       <img

@@ -14,12 +14,13 @@ const RouterSelector = (props) =>
   typeof window !== 'undefined' ? <ConnectedRouter {...props} /> : <StaticRouter {...props} />
 
 const RootComponent = (props) => {
+  // exact
   return (
     <Provider store={store}>
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route exact path="/" component={eCommerce} />
+            <Route path="/" component={eCommerce} />
             <Route component={NotFound} />
           </Switch>
         </Startup>

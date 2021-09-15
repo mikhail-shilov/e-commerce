@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Route, Switch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -6,8 +7,10 @@ import { updateRates } from '../redux/reducers/currency'
 import { updateBasket, updateGoods } from '../redux/reducers/goods'
 
 import Head from './head'
+import NotFound from './404'
 import Header from './Header'
 import Catalog from './Catalog'
+import Basket from './Basket'
 
 const ECommerce = () => {
   const dispatch = useDispatch()
@@ -43,7 +46,11 @@ const ECommerce = () => {
       <Head title="Catalog" />
       <div className="h-100 w-screen flex flex-col items-center justify-center bg-teal-lightest font-sans">
         <Header />
-        <Catalog />
+        <Switch>
+          <Route exact path="/" component={Catalog} />
+          <Route exact path="/basket" component={Basket} />
+          <Route component={NotFound} />
+        </Switch>
       </div>
     </div>
   )
