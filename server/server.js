@@ -48,8 +48,7 @@ server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   // const safeSorts = ['name', 'price']
   // const safeOrders = ['asc', 'desc']
 
-  console.log(onpage)
-  console.log(`${page} ${sort} ${order}`)
+  console.log(`onpage:${onpage} page:${page} sort:${sort} order:${order}`)
 
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
