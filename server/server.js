@@ -38,24 +38,24 @@ const middleware = [
 
 middleware.forEach((it) => server.use(it))
 
+const pathGoods = `${__dirname}/data/data.json`
+
 server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   const { page = 1 } = req.params
-  const { onpage = 20, sort, order } = req.query
-  const pathGoods = `${__dirname}/data/data.json`
-
-  const startOfPage = Number(onpage) * (Number(page) - 1)
-
-  // const safeSorts = ['name', 'price']
-  // const safeOrders = ['asc', 'desc']
-
-  console.log(`onpage:${onpage} page:${page} sort:${sort} order:${order}`)
-
+  const { onpage = 20, sort = 'title', desc } = req.query
+  const safeSorts = ['title', 'price']
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
-      const goods = JSON.parse(text)
-      const pages = Math.ceil(goods.length / onpage)
-const goodsOnPage = goods.slice(startOfPage, startOfPage + Number(onpage))
-      res.json({ status: 'ok', data: {goods: goodsOnPage, pages }})
+      const allGoods = JSON.parse(text)
+      if (typeof sort !== 'undefined' && safeSorts.includes(sort)) {
+        const order = (desc === 'true') ? -1 : 1
+        allGoods.sort((a, b) => (a[sort] > b[sort] ? 1 * order : -1 * order))
+      }
+      const startOfPage = Number(onpage) * (Number(page) - 1)
+      const pages = Math.ceil(allGoods.length / onpage)
+      const goodsOnPage = allGoods.slice(startOfPage, startOfPage + Number(onpage))
+
+      res.json({ status: 'ok', data: { goods: goodsOnPage, pages } })
     })
     .catch((err) => {
       console.log('Something wrong...')
@@ -72,8 +72,6 @@ server.get('/api/v1/rate', (req, res) => {
 
 // recive array of { id: [count] } return info about goods in basket and total price
 server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
-  const pathGoods = `${__dirname}/data/data.json`
-
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const basket = req.body.items
