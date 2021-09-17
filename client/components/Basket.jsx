@@ -5,16 +5,19 @@ import SubHeader from './SubHeader'
 
 const Basket = () => {
   const dispatch = useDispatch()
-  useEffect(() => {
-    console.log('Loading goods...')
-    dispatch({ type: "DUMMY" })
 
-  }, [])
 
   const rates = useSelector((state) => state.currency.rates)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
 
   const basket = useSelector((state) => state.goods.basket)
+
+
+  useEffect(() => {
+    console.log('Loading goods...')
+    dispatch({ type: "DUMMY" })
+  })
+
 
   const cards = basket.goods.map(good => (
     <BasketCard

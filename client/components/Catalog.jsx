@@ -8,7 +8,7 @@ const Catalog = () => {
   const rates = useSelector((state) => state.currency.rates)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
 
-  const goods = useSelector((state) => state.goods.goods)
+  const goods = useSelector((state) => state.goods.catalog.goods)
   const basketLocal = useSelector((state) => state.goods.basketLocal)
 
   const goodCards = goods.map(good => (

@@ -3,6 +3,10 @@ const ADD_GOOD = 'ADD_GOOD'
 const REMOVE_GOOD = 'REMOVE_GOOD'
 const UPDATE_BASKET = 'UPDATE_BASKET'
 const CHANGE_PAGE = 'CHANGE_PAGE'
+const CHANGE_SORT_MODE = 'CHANGE_SORT_MODE'
+const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
+
+
 
 const initialState = {
   catalog: {
@@ -11,19 +15,16 @@ const initialState = {
     page: 1,
     onPage: 12
   },
-
-  onPage: 12,
-  currentPage: 1,
-  goods: [],
-  pages: 0,
-
-  basketLocal: {}, // { goodId: %quanity% }
-
+  sort: {
+    mode: 'title',
+    isDescOrder: false
+  },
   basket: {
     goods: [],
     quanity: 0,
     total: 0
-  } // response of server
+  }, // response of server
+  basketLocal: {} // { goodId: %quanity% }
 }
 
 export default (state = initialState, action) => {
@@ -37,6 +38,24 @@ export default (state = initialState, action) => {
           pages: action.pages
         },
         goods: action.goods
+      }
+    }
+    case CHANGE_SORT_MODE: {
+      return {
+        ...state,
+        sort: {
+          ...state.sort,
+          mode: action.mode
+        }
+      }
+    }
+    case SET_DESCENDING_ORDER: {
+      return {
+        ...state,
+        sort: {
+          ...state.sort,
+          isDescOrder: action.isDescOrder
+        }
       }
     }
     case CHANGE_PAGE: {
@@ -62,6 +81,7 @@ export default (state = initialState, action) => {
       return result
     }
     case UPDATE_BASKET: {
+      console.log(action)
       return {
         ...state,
         basket: action.basket
@@ -75,6 +95,15 @@ export default (state = initialState, action) => {
 
 export function updateGoods(goods, pages) {
   return { type: UPDATE_GOODS, goods, pages }
+}
+export function changeSortMode(mode) {
+  return { type: CHANGE_SORT_MODE, mode }
+}
+export function setDescendingOrder(isDescOrder) {
+  return { type: SET_DESCENDING_ORDER, isDescOrder }
+}
+export function switchPage(number) {
+  return { type: CHANGE_PAGE, number }
 }
 export function addBasket(id) {
   return { type: ADD_GOOD, id }

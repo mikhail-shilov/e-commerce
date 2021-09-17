@@ -16,8 +16,7 @@ const ECommerce = () => {
   const dispatch = useDispatch()
   const { page } = useParams()
   const basketLocal = useSelector((state) => state.goods.basketLocal)
-  console.log('page')
-  console.log(page)
+  const sort = useSelector((state) => state.goods.sort)
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -26,20 +25,17 @@ const ECommerce = () => {
   }, [])
 
   useEffect(() => {
-    axios.get(`/api/v1/goods/${page}`).then((result) => {
+    console.log(page)
+    const query = `/api/v1/goods/${page}?onpage=20&sort=${sort.mode}&desc=${sort.isDescOrder}`
+    
+    axios.get(query).then((result) => {
       dispatch(updateGoods(result.data.data.goods, result.data.data.pages))
     })
-  }, [page])
+  }, [page, sort.mode, sort.isDescOrder])
 
   useEffect(() => {
     axios.post('/api/v1/basket', { items: basketLocal }).then((result) => {
-      console.log('basketLocal:')
-      console.log(basketLocal)
       dispatch(updateBasket(result.data.data))
-      console.log('basket:')
-      console.log(result.data.data)
-      console.log('basketLocal')
-      console.log(basketLocal)
     })
   }, [basketLocal])
 
@@ -50,8 +46,8 @@ const ECommerce = () => {
         <Header />
         <div className='max-w-screen-lg mx-auto'>
           <Switch>
-            <Route exact path="/:page?" component={Catalog} />
             <Route exact path="/basket" component={Basket} />
+            <Route exact path="/:page?" component={Catalog} />
             <Route component={NotFound} />
           </Switch>
         </div>
