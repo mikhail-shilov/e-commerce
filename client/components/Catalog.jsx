@@ -31,6 +31,8 @@ const Catalog = () => {
       <div className='list-of-goods flex w-full flex-grow content-start pb-4 px-20 flex-wrap'>
         {isLoadingCatalog ? <Placeholder /> : goodCards}
       </div>
+      {!isLoadingCatalog && <Pagination />}
+
     </div>)
 }
 
