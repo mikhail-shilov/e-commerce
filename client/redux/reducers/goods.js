@@ -5,21 +5,22 @@ const UPDATE_BASKET = 'UPDATE_BASKET'
 const CHANGE_PAGE = 'CHANGE_PAGE'
 const CHANGE_SORT_MODE = 'CHANGE_SORT_MODE'
 const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
-
-
+const SET_LOADING_CATALOG = 'SET_LOADING_CATALOG'
 
 const initialState = {
   catalog: {
+    isLoading: false,
     goods: [],
     pages: null,
     page: 1,
-    onPage: 12
+    onPage: 20
   },
   sort: {
     mode: 'title',
     isDescOrder: false
   },
   basket: {
+    isLoading: false,
     goods: [],
     quanity: 0,
     total: 0
@@ -65,7 +66,8 @@ export default (state = initialState, action) => {
       }
     }
     case ADD_GOOD: {
-      const quanity = ((typeof state.basketLocal[action.id] === 'undefined') ? 1 : (state.basketLocal[action.id] + 1))
+      const quanity = (
+        typeof state.basketLocal[action.id] === 'undefined' ? 1 : (state.basketLocal[action.id] + 1))
       return {
         ...state,
         basketLocal: { ...state.basketLocal, [action.id]: quanity }
@@ -81,10 +83,18 @@ export default (state = initialState, action) => {
       return result
     }
     case UPDATE_BASKET: {
-      console.log(action)
       return {
         ...state,
         basket: action.basket
+      }
+    }
+    case SET_LOADING_CATALOG: {
+      return {
+        ...state,
+        catalog: {
+          ...state.catalog,
+          isLoading: action.isLoading
+        }
       }
     }
 
@@ -113,4 +123,7 @@ export function removeGood(id) {
 }
 export function updateBasket(basket) {
   return { type: UPDATE_BASKET, basket }
+}
+export function setLoadingCatalog(isLoading) {
+  return { type: SET_LOADING_CATALOG, isLoading }
 }

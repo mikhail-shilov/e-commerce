@@ -12,7 +12,6 @@ import Html from '../client/html'
 
 const { readFile } = require('fs').promises
 
-
 require('colors')
 
 let Root
@@ -48,7 +47,7 @@ server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
     .then((text) => {
       const allGoods = JSON.parse(text)
       if (typeof sort !== 'undefined' && safeSorts.includes(sort)) {
-        const order = (desc === 'true') ? -1 : 1
+        const order = desc === 'true' ? -1 : 1
         allGoods.sort((a, b) => (a[sort] > b[sort] ? 1 * order : -1 * order))
       }
       const startOfPage = Number(onpage) * (Number(page) - 1)
