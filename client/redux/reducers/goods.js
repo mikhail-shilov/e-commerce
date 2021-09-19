@@ -62,7 +62,7 @@ export default (state = initialState, action) => {
     case CHANGE_PAGE: {
       return {
         ...state,
-        catalog: { ...state.catalog, page: action.page }
+        catalog: { ...state.catalog, page: action.number }
       }
     }
     case ADD_GOOD: {

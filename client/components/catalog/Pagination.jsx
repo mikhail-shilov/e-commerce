@@ -1,16 +1,69 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { switchPage } from '../../redux/reducers/goods'
+
+const GAP = 'gap'
+const ACTIVE = 'active'
 
 const Pagination = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
   const pages = useSelector(state => state.goods.catalog.pages)
-  const links = new Array(pages).fill(0).map((item, index) => (
-    <Link key={index} to={`/${index + 1}`} className='w-10 px-1 border'>
-      {index + 1}
-    </Link>))
+  const page = useSelector(state => state.goods.catalog.page)
+
+  const [pageStatuses, updateStatuses] = useState([{ page: 1 }])
+
+  useEffect(() => {
+    let arrWithNumbers = []
+    let gapStart = null
+    let gapEnd = null
+    for (let index = 1; index <= pages; index += 1) {
+      if (
+        index <= 3
+        || index > pages - 3
+        || (index >= page - 2 && index <= page + 2)
+      ) {
+        if (gapStart !== null) {
+          if (gapStart === gapEnd) {
+            arrWithNumbers = [...arrWithNumbers, { page: gapStart, status: GAP }]
+          } else {
+            const centerOfGap = gapEnd - Math.floor((gapEnd - gapStart) / 2)
+            arrWithNumbers = [...arrWithNumbers, { page: centerOfGap, status: GAP }]
+          }
+          gapStart = null
+          gapEnd = null
+        }
+
+        const newItem = { page: index }
+        if (index === page) newItem.status = ACTIVE
+
+        arrWithNumbers = [...arrWithNumbers, newItem]
+      } else {
+        if (gapStart === null) { gapStart = index }
+        gapEnd = index
+      }
+    }
+    updateStatuses(arrWithNumbers)
+  }, [pages, page])
+
+  const clickHandler = (pageNumber) => {
+    dispatch(switchPage(pageNumber))
+    history.push(`/${pageNumber}`)
+  }
+
+  const filteredLinks = pageStatuses.map((item) => (
+    <button
+      key={item.page}
+      type='button'
+      onClick={() => { clickHandler(item.page) }}
+      className={`w-10 px-1 border ${item.status === ACTIVE && 'bg-gray-400'}`}>
+      {item.status === GAP ? '...' : item.page}
+    </button>))
+
   return (
     <div className="flex flex-wrap justify-center text-center pb-4">
-      {links}
+      {filteredLinks}
     </div>
   )
 }
