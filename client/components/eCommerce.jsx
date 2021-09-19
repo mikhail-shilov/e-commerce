@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Route, Switch, useParams, useHistory } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
@@ -15,21 +15,12 @@ import Basket from './Basket'
 const ECommerce = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const { page } = useParams()
-  const test = useParams().page
   const basketLocal = useSelector((state) => state.goods.basketLocal)
   const onPage = useSelector((state) => state.goods.catalog.onPage)
-  const pages = useSelector((state) => state.goods.pages)
+  const page = useSelector((state) => state.goods.catalog.page)
   const sort = useSelector((state) => state.goods.sort)
 
-  const isLoadingCatalog = useSelector((state) => state.goods.catalog.isLoading)
-  useEffect(() => {
-    console.log('Loading switch!')
-  }, [isLoadingCatalog])
-
-
-
-  if (typeof page === 'undefined') { history.push('/1') }
+  // if (typeof page === 'undefined') { history.push('/1') }
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -38,9 +29,12 @@ const ECommerce = () => {
   }, [])
 
   useEffect(() => {
+    history.push(`/${page}`)
+    console.log(`Effect by page: ${page}`)
+  }, [page])
+
+  useEffect(() => {
     dispatch(setLoadingCatalog(true))
-    console.log(page)
-    console.log(`test:${test} pages:${pages}`)
     const query = `/api/v1/goods/${page}?onpage=${onPage}&sort=${sort.mode}&desc=${sort.isDescOrder}`
     axios.get(query).then((result) => {
       dispatch(updateGoods(result.data.data.goods, result.data.data.pages))
