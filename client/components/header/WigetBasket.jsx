@@ -9,9 +9,16 @@ const WigetBasket = () => {
   const rates = useSelector((state) => state.currency.rates)
   const isLoadingBasket = useSelector((state) => state.goods.basket.isLoading)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
+  const summaryBasket = `${quanity} goods, total: ${(total * rates[activeCurrency]).toFixed(2)} ${activeCurrency}`
+  const emptyBasket = 'Basket is empty'
+
   return (
     <div className='flex items-center'>
-      {isLoadingBasket ? <Placeholder /> : <Link to='/basket'>{quanity} товаров, на сумму {(total * rates[activeCurrency]).toFixed(2)} {activeCurrency}</Link>}
+      {isLoadingBasket ?
+        <Placeholder /> :
+        <Link to='/basket'>
+          {quanity === 0 ? emptyBasket : summaryBasket}
+        </Link>}
     </div>
   )
 }
