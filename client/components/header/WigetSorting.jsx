@@ -1,18 +1,18 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeSortMode, setDescendingOrder, switchPage } from '../../redux/reducers/goods';
+import { switchPage } from '../../redux/reducers/goods';
 
-const WigetSorting = () => {
+const WigetSorting = (props) => {
   const dispatch = useDispatch()
   const mode = useSelector(state => state.goods.sort.mode)
   const desc = useSelector(state => state.goods.sort.isDescOrder)
   const reSortHandler = (oldMode, newMode) => {
     console.log(`mode: ${mode} newmode: ${newMode}`)
     if (oldMode === newMode) {
-      dispatch(setDescendingOrder(!desc))
+      dispatch(props.acOrder(!desc))
     } else {
-      dispatch(changeSortMode(newMode))
-      dispatch(setDescendingOrder(false))
+      dispatch(props.acSortMode(newMode))
+      dispatch(props.acOrder(false))
     }
     dispatch(switchPage(1))
   }

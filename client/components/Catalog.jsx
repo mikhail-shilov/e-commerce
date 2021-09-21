@@ -4,6 +4,7 @@ import GoodCard from './catalog/GoodCard'
 import Pagination from './catalog/Pagination'
 import SubHeader from './SubHeader'
 import Placeholder from './Placeholder'
+import { changeSortMode, setDescendingOrder } from '../redux/reducers/goods'
 
 const Catalog = () => {
   const rates = useSelector((state) => state.currency.rates)
@@ -26,13 +27,12 @@ const Catalog = () => {
 
   return (
     <div className="main flex flex-col h-100 w-full h-screen px-14 text-center">
-      <SubHeader title='Goods:' />
+      <SubHeader title='Goods:' acSortMode={changeSortMode} acOrder={setDescendingOrder}/>
       {!isLoadingCatalog && <Pagination />}
       <div className='list-of-goods flex w-full flex-grow content-start pb-4 px-20 flex-wrap'>
         {isLoadingCatalog ? <Placeholder /> : goodCards}
       </div>
       {!isLoadingCatalog && <Pagination />}
-
     </div>)
 }
 
