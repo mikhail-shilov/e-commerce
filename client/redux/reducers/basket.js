@@ -1,29 +1,12 @@
-const UPDATE_GOODS = 'UPDATE_GOODS'
-const ADD_GOOD = 'ADD_GOOD'
-const REMOVE_GOOD = 'REMOVE_GOOD'
 const UPDATE_BASKET = 'UPDATE_BASKET'
-const CHANGE_PAGE = 'CHANGE_PAGE'
 const CHANGE_SORT_MODE = 'CHANGE_SORT_MODE'
 const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
-const SET_LOADING_CATALOG = 'SET_LOADING_CATALOG'
+const ADD_GOOD = 'ADD_GOOD'
+const REMOVE_GOOD = 'REMOVE_GOOD'
+const CHANGE_PAGE = 'CHANGE_PAGE'
 const SET_LOADING_BASKET = 'SET_LOADING_BASKET'
 
 const initialState = {
-  catalog: {
-    isLoading: false,
-    goods: [],
-    pages: null,
-    page: 1,
-    onPage: 20,
-    sort: {
-      mode: 'title',
-      isDescOrder: false
-    }
-  },
-  sort: {
-    mode: 'title',
-    isDescOrder: false
-  },
   basket: {
     isLoading: false,
     goods: [],
@@ -33,21 +16,16 @@ const initialState = {
       mode: 'title',
       isDescOrder: false
     }
-  }, // response of server
-  basketLocal: {} // { goodId: %quanity% }
+  },
+  basketLocal: {}
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_GOODS: {
+    case UPDATE_BASKET: {
       return {
         ...state,
-        catalog: {
-          ...state.catalog,
-          goods: action.goods,
-          pages: action.pages
-        },
-        goods: action.goods
+        basket: action.basket
       }
     }
     case CHANGE_SORT_MODE: {
@@ -91,21 +69,6 @@ export default (state = initialState, action) => {
       }
       return result
     }
-    case UPDATE_BASKET: {
-      return {
-        ...state,
-        basket: action.basket
-      }
-    }
-    case SET_LOADING_CATALOG: {
-      return {
-        ...state,
-        catalog: {
-          ...state.catalog,
-          isLoading: action.isLoading
-        }
-      }
-    }
     case SET_LOADING_BASKET: {
       return {
         ...state,
@@ -115,14 +78,13 @@ export default (state = initialState, action) => {
         }
       }
     }
-
     default:
       return state
   }
 }
 
-export function updateGoods(goods, pages) {
-  return { type: UPDATE_GOODS, goods, pages }
+export function updateBasket(basket) {
+  return { type: UPDATE_BASKET, basket }
 }
 export function changeSortMode(mode) {
   return { type: CHANGE_SORT_MODE, mode }
@@ -138,12 +100,6 @@ export function addBasket(id) {
 }
 export function removeGood(id) {
   return { type: REMOVE_GOOD, id }
-}
-export function updateBasket(basket) {
-  return { type: UPDATE_BASKET, basket }
-}
-export function setLoadingCatalog(isLoading) {
-  return { type: SET_LOADING_CATALOG, isLoading }
 }
 export function setLoadingBasket(isLoading) {
   return { type: SET_LOADING_BASKET, isLoading }

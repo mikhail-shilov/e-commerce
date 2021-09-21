@@ -1,12 +1,8 @@
 const UPDATE_GOODS = 'UPDATE_GOODS'
-const ADD_GOOD = 'ADD_GOOD'
-const REMOVE_GOOD = 'REMOVE_GOOD'
-const UPDATE_BASKET = 'UPDATE_BASKET'
 const CHANGE_PAGE = 'CHANGE_PAGE'
 const CHANGE_SORT_MODE = 'CHANGE_SORT_MODE'
 const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
 const SET_LOADING_CATALOG = 'SET_LOADING_CATALOG'
-const SET_LOADING_BASKET = 'SET_LOADING_BASKET'
 
 const initialState = {
   catalog: {
@@ -19,22 +15,7 @@ const initialState = {
       mode: 'title',
       isDescOrder: false
     }
-  },
-  sort: {
-    mode: 'title',
-    isDescOrder: false
-  },
-  basket: {
-    isLoading: false,
-    goods: [],
-    quanity: 0,
-    total: 0,
-    sort: {
-      mode: 'title',
-      isDescOrder: false
-    }
-  }, // response of server
-  basketLocal: {} // { goodId: %quanity% }
+  }
 }
 
 export default (state = initialState, action) => {
@@ -74,29 +55,6 @@ export default (state = initialState, action) => {
         catalog: { ...state.catalog, page: action.number }
       }
     }
-    case ADD_GOOD: {
-      const quanity = (
-        typeof state.basketLocal[action.id] === 'undefined' ? 1 : (state.basketLocal[action.id] + 1))
-      return {
-        ...state,
-        basketLocal: { ...state.basketLocal, [action.id]: quanity }
-      }
-    }
-    case REMOVE_GOOD: {
-      const result = { ...state, basketLocal: { ...state.basketLocal } }
-      if (state.basketLocal[action.id] > 1) {
-        result.basketLocal[action.id] = state.basketLocal[action.id] - 1
-      } else {
-        delete result.basketLocal[action.id]
-      }
-      return result
-    }
-    case UPDATE_BASKET: {
-      return {
-        ...state,
-        basket: action.basket
-      }
-    }
     case SET_LOADING_CATALOG: {
       return {
         ...state,
@@ -106,16 +64,6 @@ export default (state = initialState, action) => {
         }
       }
     }
-    case SET_LOADING_BASKET: {
-      return {
-        ...state,
-        basket: {
-          ...state.basket,
-          isLoading: action.isLoading
-        }
-      }
-    }
-
     default:
       return state
   }
@@ -133,18 +81,6 @@ export function setDescendingOrder(isDescOrder) {
 export function switchPage(number) {
   return { type: CHANGE_PAGE, number }
 }
-export function addBasket(id) {
-  return { type: ADD_GOOD, id }
-}
-export function removeGood(id) {
-  return { type: REMOVE_GOOD, id }
-}
-export function updateBasket(basket) {
-  return { type: UPDATE_BASKET, basket }
-}
 export function setLoadingCatalog(isLoading) {
   return { type: SET_LOADING_CATALOG, isLoading }
-}
-export function setLoadingBasket(isLoading) {
-  return { type: SET_LOADING_BASKET, isLoading }
 }
