@@ -6,6 +6,7 @@ const CHANGE_PAGE = 'CHANGE_PAGE'
 const CHANGE_SORT_MODE = 'CHANGE_SORT_MODE'
 const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
 const SET_LOADING_CATALOG = 'SET_LOADING_CATALOG'
+const SET_LOADING_BASKET = 'SET_LOADING_BASKET'
 
 const initialState = {
   catalog: {
@@ -97,6 +98,15 @@ export default (state = initialState, action) => {
         }
       }
     }
+    case SET_LOADING_BASKET: {
+      return {
+        ...state,
+        basket: {
+          ...state.basket,
+          isLoading: action.isLoading
+        }
+      }
+    }
 
     default:
       return state
@@ -126,4 +136,7 @@ export function updateBasket(basket) {
 }
 export function setLoadingCatalog(isLoading) {
   return { type: SET_LOADING_CATALOG, isLoading }
+}
+export function setLoadingBasket(isLoading) {
+  return { type: SET_LOADING_BASKET, isLoading }
 }

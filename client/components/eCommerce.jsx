@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { updateRates } from '../redux/reducers/currency'
-import { setLoadingCatalog, updateBasket, updateGoods } from '../redux/reducers/goods'
+import { setLoadingBasket, setLoadingCatalog, updateBasket, updateGoods } from '../redux/reducers/goods'
 
 import Head from './head'
 import NotFound from './404'
@@ -43,8 +43,10 @@ const ECommerce = () => {
   }, [page, sort.mode, sort.isDescOrder])
 
   useEffect(() => {
+    dispatch(setLoadingBasket(true))
     axios.post('/api/v1/basket', { items: basketLocal }).then((result) => {
       dispatch(updateBasket(result.data.data))
+      dispatch(setLoadingBasket(false))
     })
   }, [basketLocal])
 
