@@ -38,22 +38,24 @@ const middleware = [
 middleware.forEach((it) => server.use(it))
 
 const pathGoods = `${__dirname}/data/data.json`
+const safeSorts = ['title', 'price']
+const sortingGoods = (listOfGoods, sortMode, isDescOrder) => {
+  const order = isDescOrder === 'true' ? -1 : 1
+  return ([...listOfGoods].sort((a, b) => (a[sortMode] > b[sortMode] ? 1 * order : -1 * order)))
+}
 
 server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   const { page = 1 } = req.params
   const { onpage = 20, sort = 'title', desc } = req.query
-  const safeSorts = ['title', 'price']
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
-      const allGoods = JSON.parse(text)
+      let allGoods = JSON.parse(text)
       if (typeof sort !== 'undefined' && safeSorts.includes(sort)) {
-        const order = desc === 'true' ? -1 : 1
-        allGoods.sort((a, b) => (a[sort] > b[sort] ? 1 * order : -1 * order))
+        allGoods = sortingGoods(allGoods, sort, desc)
       }
       const startOfPage = Number(onpage) * (Number(page) - 1)
       const pages = Math.ceil(allGoods.length / onpage)
       const goodsOnPage = allGoods.slice(startOfPage, startOfPage + Number(onpage))
-
       res.json({ status: 'ok', data: { goods: goodsOnPage, pages } })
     })
     .catch((err) => {
@@ -71,16 +73,20 @@ server.get('/api/v1/rate', (req, res) => {
 
 // recive array of { id: [count] } return info about goods in basket and total price
 server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
+  const { sort = 'title', desc } = req.query
+
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const basket = req.body.items
-      const goodsInBusket = JSON.parse(text)
+      let goodsInBusket = JSON.parse(text)
         .filter((item) => (Object.keys(req.body.items).includes(item.id)))
         .map(item => ({ ...item, quanity: basket[item.id] }))
       const quanityInBasket = Object.values(basket).reduce((sum, quanityGood) => sum + quanityGood, 0)
       const totalOfBasket = goodsInBusket.reduce((total, good) => (
         total + good.price * basket[good.id]), 0)
-
+      if (typeof sort !== 'undefined' && safeSorts.includes(sort)) {
+        goodsInBusket = sortingGoods(goodsInBusket, sort, desc)
+      }
       res.json({
         status: 'ok',
         data: {
@@ -91,7 +97,6 @@ server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
       })
     })
     .catch((err) => {
-      console.log('Something wrong...')
       res.json({ status: 'error', message: err })
     })
 })
