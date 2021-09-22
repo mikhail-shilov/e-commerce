@@ -5,16 +5,14 @@ const SET_DESCENDING_ORDER = 'SET_DESCENDING_ORDER'
 const SET_LOADING_CATALOG = 'SET_LOADING_CATALOG'
 
 const initialState = {
-  catalog: {
-    isLoading: false,
-    goods: [],
-    pages: null,
-    page: 1,
-    onPage: 20,
-    sort: {
-      mode: 'title',
-      isDescOrder: false
-    }
+  isCatalogLoading: false,
+  goods: [],
+  pages: null,
+  page: 1,
+  onPage: 20,
+  sorting: {
+    mode: 'title',
+    isDescOrder: false
   }
 }
 
@@ -23,19 +21,15 @@ export default (state = initialState, action) => {
     case UPDATE_GOODS: {
       return {
         ...state,
-        catalog: {
-          ...state.catalog,
-          goods: action.goods,
-          pages: action.pages
-        },
-        goods: action.goods
+        goods: [...action.goods],
+        pages: action.pages
       }
     }
     case CHANGE_SORT_MODE: {
       return {
         ...state,
-        sort: {
-          ...state.sort,
+        sorting: {
+          ...state.sorting,
           mode: action.mode
         }
       }
@@ -43,8 +37,8 @@ export default (state = initialState, action) => {
     case SET_DESCENDING_ORDER: {
       return {
         ...state,
-        sort: {
-          ...state.sort,
+        sorting: {
+          ...state.sorting,
           isDescOrder: action.isDescOrder
         }
       }
@@ -52,16 +46,13 @@ export default (state = initialState, action) => {
     case CHANGE_PAGE: {
       return {
         ...state,
-        catalog: { ...state.catalog, page: action.number }
+        page: action.number
       }
     }
     case SET_LOADING_CATALOG: {
       return {
         ...state,
-        catalog: {
-          ...state.catalog,
-          isLoading: action.isLoading
-        }
+        isLoading: action.isLoading
       }
     }
     default:

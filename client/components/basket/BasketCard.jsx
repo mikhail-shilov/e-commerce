@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { addBasket, removeGood } from '../../redux/reducers/goods'
+import { addBasket, removeGood } from '../../redux/reducers/basket'
 
 const BasketCard = (props) => {
   const dispatch = useDispatch()

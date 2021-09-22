@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 import Placeholder from '../Placeholder'
 
 const WigetBasket = () => {
-  const quanity = useSelector((state) => state.goods.basket.quanity)
-  const totalBase = useSelector((state) => state.goods.basket.total)
   const rates = useSelector((state) => state.currency.rates)
-  const isLoadingBasket = useSelector((state) => state.goods.basket.isLoading)
+  const quanity = useSelector((state) => state.basket.quanity)
+  const totalBase = useSelector((state) => state.basket.total)
+  const isLoadingBasket = useSelector((state) => state.basket.isLoading)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
   
   const total = (totalBase * rates[activeCurrency]).toFixed(2)

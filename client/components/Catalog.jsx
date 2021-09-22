@@ -4,14 +4,14 @@ import GoodCard from './catalog/GoodCard'
 import Pagination from './catalog/Pagination'
 import SubHeader from './SubHeader'
 import Placeholder from './Placeholder'
-import { changeSortMode, setDescendingOrder } from '../redux/reducers/goods'
+import { changeSortMode, setDescendingOrder } from '../redux/reducers/catalog'
 
 const Catalog = () => {
   const rates = useSelector((state) => state.currency.rates)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
-  const goods = useSelector((state) => state.goods.catalog.goods)
-  const isLoadingCatalog = useSelector((state) => state.goods.catalog.isLoading)
-  const basketLocal = useSelector((state) => state.goods.basketLocal)
+  const goods = useSelector((state) => state.catalog.goods)
+  const isLoadingCatalog = useSelector((state) => state.catalog.isLoading)
+  const basketLocal = useSelector((state) => state.basket.basketLocal)
 
   const goodCards = goods.map(good => (
     <GoodCard

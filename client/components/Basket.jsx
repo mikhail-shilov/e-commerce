@@ -10,7 +10,8 @@ const Basket = () => {
   const rates = useSelector((state) => state.currency.rates)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
 
-  const basket = useSelector((state) => state.goods.basket)
+  const goods = useSelector((state) => state.basket.goods)
+  const total = useSelector((state) => state.basket.total)
 
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const Basket = () => {
   })
 
 
-  const cards = basket.goods.map(good => (
+  const cards = goods.map(good => (
     <BasketCard
       key={good.id}
       id={good.id}
@@ -37,7 +38,7 @@ const Basket = () => {
         {cards}
       </div>
       <div className="border text-right text-lg mx-20 px-2 py-4">
-        Total: {(basket.total * rates[activeCurrency]).toFixed(2)} {activeCurrency}
+        Total: {(total * rates[activeCurrency]).toFixed(2)} {activeCurrency}
       </div>
     </div>)
 }

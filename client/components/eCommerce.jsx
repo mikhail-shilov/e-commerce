@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
 import { updateRates } from '../redux/reducers/currency'
-import { setLoadingBasket, setLoadingCatalog, updateBasket, updateGoods } from '../redux/reducers/goods'
+import { setLoadingCatalog, updateGoods } from '../redux/reducers/catalog'
+import { setLoadingBasket, updateBasket } from '../redux/reducers/basket'
 
 import Head from './head'
 import NotFound from './404'
@@ -15,12 +16,10 @@ import Basket from './Basket'
 const ECommerce = () => {
   const dispatch = useDispatch()
   const history = useHistory()
-  const basketLocal = useSelector((state) => state.goods.basketLocal)
-  const onPage = useSelector((state) => state.goods.catalog.onPage)
-  const page = useSelector((state) => state.goods.catalog.page)
-  const sort = useSelector((state) => state.goods.sort)
-
-  // if (typeof page === 'undefined') { history.push('/1') }
+  const basketLocal = useSelector((state) => state.basket.basketLocal)
+  const onPage = useSelector((state) => state.catalog.onPage)
+  const page = useSelector((state) => state.catalog.page)
+  const sort = useSelector((state) => state.catalog.sorting)
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {

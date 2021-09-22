@@ -7,15 +7,13 @@ const CHANGE_PAGE = 'CHANGE_PAGE'
 const SET_LOADING_BASKET = 'SET_LOADING_BASKET'
 
 const initialState = {
-  basket: {
-    isLoading: false,
-    goods: [],
-    quanity: 0,
-    total: 0,
-    sort: {
-      mode: 'title',
-      isDescOrder: false
-    }
+  isBasketLoading: false,
+  goods: [],
+  quanity: 0,
+  total: 0,
+  sorting: {
+    mode: 'title',
+    isDescOrder: false
   },
   basketLocal: {}
 }
@@ -25,14 +23,16 @@ export default (state = initialState, action) => {
     case UPDATE_BASKET: {
       return {
         ...state,
-        basket: action.basket
+        goods: action.basket.goods,
+        quanity: action.basket.quanity,
+        total: action.basket.total
       }
     }
     case CHANGE_SORT_MODE: {
       return {
         ...state,
-        sort: {
-          ...state.sort,
+        sorting: {
+          ...state.sorting,
           mode: action.mode
         }
       }
@@ -40,16 +40,10 @@ export default (state = initialState, action) => {
     case SET_DESCENDING_ORDER: {
       return {
         ...state,
-        sort: {
-          ...state.sort,
+        sorting: {
+          ...state.sorting,
           isDescOrder: action.isDescOrder
         }
-      }
-    }
-    case CHANGE_PAGE: {
-      return {
-        ...state,
-        catalog: { ...state.catalog, page: action.number }
       }
     }
     case ADD_GOOD: {

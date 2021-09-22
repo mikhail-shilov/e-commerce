@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { switchPage } from '../../redux/reducers/goods'
+import { switchPage } from '../../redux/reducers/catalog'
 
 const GAP = 'gap'
 const ACTIVE = 'active'
 
 const Pagination = () => {
   const dispatch = useDispatch()
-  const pages = useSelector(state => state.goods.catalog.pages)
-  const page = useSelector(state => state.goods.catalog.page)
+  const pages = useSelector(state => state.catalog.pages)
+  const page = useSelector(state => state.catalog.page)
 
   const [pageStatuses, updateStatuses] = useState([{ page: 1 }])
 
