@@ -1,24 +1,15 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { changeSortMode, setDescendingOrder } from '../redux/reducers/basket'
 import BasketCard from './basket/BasketCard'
 import SubHeader from './SubHeader'
 
 const Basket = () => {
-  const dispatch = useDispatch()
-
-
   const rates = useSelector((state) => state.currency.rates)
   const activeCurrency = useSelector((state) => state.currency.activeCurrency)
 
   const goods = useSelector((state) => state.basket.goods)
   const total = useSelector((state) => state.basket.total)
-
-
-  useEffect(() => {
-    console.log('Loading goods...')
-    dispatch({ type: "DUMMY" })
-  })
-
 
   const cards = goods.map(good => (
     <BasketCard
@@ -32,12 +23,17 @@ const Basket = () => {
   ))
 
   return (
-    <div className="main flex flex-col h-100 w-full border px-14 text-center">
-      <SubHeader title='Goods in basket:' />
+    <div className="basket flex flex-col h-100 w-full px-14 text-center">
+      <SubHeader
+        title='Goods in basket:'
+        acSortMode={changeSortMode}
+        acOrder={setDescendingOrder}
+      />
+
       <div className='flex flex-col pt-2 px-20 flex-wrap'>
         {cards}
       </div>
-      <div className="border text-right text-lg mx-20 px-2 py-4">
+      <div className="text-right text-lg mx-20 px-2 py-4">
         Total: {(total * rates[activeCurrency]).toFixed(2)} {activeCurrency}
       </div>
     </div>)

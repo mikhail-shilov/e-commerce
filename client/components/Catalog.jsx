@@ -60,7 +60,7 @@ const Catalog = () => {
     <div className="main flex flex-col h-100 w-full h-screen px-14 text-center">
       <SubHeader title='Goods:' acSortMode={changeSortMode} acOrder={setDescendingOrder} />
       {!isLoadingCatalog && <Pagination />}
-      <div className='list-of-goods flex w-full flex-grow content-start pb-4 px-20 flex-wrap'>
+      <div className='list-of-goods flex w-full flex-grow content-start px-20 flex-wrap'>
         {isLoadingCatalog ? <Placeholder /> : goodCards}
       </div>
       {!isLoadingCatalog && <Pagination />}

@@ -16,6 +16,8 @@ import Basket from './Basket'
 const ECommerce = () => {
   const dispatch = useDispatch()
   const basketLocal = useSelector((state) => state.basket.basketLocal)
+  const basketSort = useSelector((state) => state.basket.sorting)
+
 
   useEffect(() => {
     axios.get('/api/v1/rate').then((result) => {
@@ -25,11 +27,12 @@ const ECommerce = () => {
 
   useEffect(() => {
     dispatch(setLoadingBasket(true))
-    axios.post('/api/v1/basket', { items: basketLocal }).then((result) => {
+    const query = `/api/v1/basket?sort=${basketSort.mode}&desc=${basketSort.isDescOrder}`
+    axios.post(query, { items: basketLocal }).then((result) => {
       dispatch(updateBasket(result.data.data))
       dispatch(setLoadingBasket(false))
     })
-  }, [basketLocal])
+  }, [basketLocal, basketSort])
 
   return (
     <div className='w-screen mx-auto'>
