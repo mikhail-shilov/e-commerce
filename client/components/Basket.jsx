@@ -30,7 +30,7 @@ const Basket = () => {
         acOrder={setDescendingOrder}
       />
 
-      <div className='flex flex-col pt-2 px-20 flex-wrap'>
+      <div className='goods flex flex-col px-20 flex-wrap'>
         {cards}
       </div>
       <div className="text-right text-lg mx-20 px-2 py-4">
