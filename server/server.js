@@ -44,6 +44,13 @@ const sortingGoods = (listOfGoods, sortMode, isDescOrder) => {
   return ([...listOfGoods].sort((a, b) => (a[sortMode] > b[sortMode] ? 1 * order : -1 * order)))
 }
 
+
+server.post('/api/v1/log/', (req, res) => {
+  const { type, message } = req.body
+  res.json({ date: new Date(), event: { type, message } })
+})
+
+
 server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   const { page = 1 } = req.params
   const { onpage = 20, sort = 'title', desc } = req.query
@@ -73,8 +80,8 @@ server.get('/api/v1/rate', (req, res) => {
 
 // recive array of { id: [count] } return info about goods in basket and total price
 server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
-  const { sort = 'title', desc } = req.query
-
+  const { sort = 'title', desc = false } = req.query
+console.log(req.query)
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const basket = req.body.items

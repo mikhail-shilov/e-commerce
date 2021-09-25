@@ -27,8 +27,8 @@ const ECommerce = () => {
 
   useEffect(() => {
     dispatch(setLoadingBasket(true))
-    const query = `/api/v1/basket?sort=${basketSort.mode}&desc=${basketSort.isDescOrder}`
-    axios.post(query, { items: basketLocal }).then((result) => {
+    const queryUrl = `/api/v1/basket?sort=${basketSort.mode}&desc=${basketSort.isDescOrder}`
+    axios.post(queryUrl, { items: basketLocal }).then((result) => {
       dispatch(updateBasket(result.data.data))
       dispatch(setLoadingBasket(false))
     })
