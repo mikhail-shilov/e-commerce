@@ -1,8 +1,32 @@
 [
     {
-        "0": {
-            "type": "createWorld",
-            "message": "Let's go!"
-        }
+        "id": "0",
+        "date": "2021-09-25T19:40:49.788Z",
+        "type": "createWorld",
+        "message": "Let's go!"
+    },
+    {
+        "id": "1buXhgCei8CfvgBJzpg3U",
+        "date": "2021-09-25T19:40:59.788Z",
+        "type": "currency",
+        "message": "Change some to different"
+    },
+    {
+        "id": "0tLMm3MLs5p1qoBYrjkhd",
+        "date": "2021-09-25T19:49:02.475Z",
+        "type": "currency",
+        "message": "Change more..."
+    },
+    {
+        "id": "3ZYYQfbmT2DFQFpDwtl_u",
+        "date": "2021-09-25T19:51:24.317Z",
+        "type": "currency",
+        "message": "Change more..."
+    },
+    {
+        "id": "z-FCjc4D0aJA-XOWg9Xsi",
+        "date": "2021-09-25T19:51:27.023Z",
+        "type": "currency",
+        "message": "Change more..."
     }
 ]

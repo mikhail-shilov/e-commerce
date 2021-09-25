@@ -5,12 +5,13 @@ import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 import axios from 'axios'
+import { nanoid } from 'nanoid'
 
 import cookieParser from 'cookie-parser'
 import config from './config'
 import Html from '../client/html'
 
-const { readFile } = require('fs').promises
+const { readFile, writeFile } = require('fs').promises
 
 require('colors')
 
@@ -38,18 +39,12 @@ const middleware = [
 middleware.forEach((it) => server.use(it))
 
 const pathGoods = `${__dirname}/data/data.json`
+const pathLog = `${__dirname}/data/log.json`
 const safeSorts = ['title', 'price']
 const sortingGoods = (listOfGoods, sortMode, isDescOrder) => {
   const order = isDescOrder === 'true' ? -1 : 1
   return ([...listOfGoods].sort((a, b) => (a[sortMode] > b[sortMode] ? 1 * order : -1 * order)))
 }
-
-
-server.post('/api/v1/log/', (req, res) => {
-  const { type, message } = req.body
-  res.json({ date: new Date(), event: { type, message } })
-})
-
 
 server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   const { page = 1 } = req.params
@@ -81,7 +76,7 @@ server.get('/api/v1/rate', (req, res) => {
 // recive array of { id: [count] } return info about goods in basket and total price
 server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
   const { sort = 'title', desc = false } = req.query
-console.log(req.query)
+  console.log(req.query)
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const basket = req.body.items
@@ -107,6 +102,39 @@ console.log(req.query)
       res.json({ status: 'error', message: err })
     })
 })
+
+server.get('/api/v1/log/', (req, res) => {
+  readFile(pathLog, { encoding: 'utf8' })
+    .then((text) => { res.json(JSON.parse(text)) })
+    .catch((err) => { res.json({ status: 'error', message: err }) })
+})
+
+server.post('/api/v1/log/', (req, res) => {
+  const { type, message } = req.body
+  const newRecord = {
+    id: nanoid(),
+    date: new Date(),
+    type,
+    message
+  }
+  readFile(pathLog, { encoding: 'utf8' })
+    .then((text) => {
+      const existingLog = JSON.parse(text)
+      writeFile(pathLog, JSON.stringify([...existingLog, newRecord]), { encoding: 'utf8' })
+        .then(() => { res.json({ status: 'ok' }) })
+        .catch((err) => { res.json({ status: 'error', message: err }) })
+    })
+})
+
+server.delete('/api/v1/log/', (req, res) => {
+  writeFile(pathLog, JSON.stringify([]), { encoding: 'utf8' })
+    .then(() => { res.json({ status: 'ok' }) })
+    .catch((err) => { res.json({ status: 'error', message: err }) })
+})
+
+
+
+
 
 server.use('/api/', (req, res) => {
   res.status(404)

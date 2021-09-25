@@ -86,6 +86,7 @@
         "dotenv": "^10.0.0",
         "express": "^4.17.1",
         "history": "^4.10.1",
+        "nanoid": "^3.1.25",
         "prop-types": "^15.7.2",
         "react": "17.0.1",
         "react-dom": "17.0.1",
@@ -154,7 +155,8 @@
     },
     "nodemonConfig": {
         "ignore": [
-            "*.hot-update.json"
+            "*.hot-update.json",
+            "data/*.json"
         ]
     },
     "husky": {
