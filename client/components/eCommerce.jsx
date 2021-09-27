@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
@@ -12,6 +12,17 @@ import Header from './Header'
 
 import Catalog from './Catalog'
 import Basket from './Basket'
+import Logger from './Logger'
+
+
+export function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
+
 
 const ECommerce = () => {
   const dispatch = useDispatch()
@@ -37,7 +48,9 @@ const ECommerce = () => {
   return (
     <div className='w-screen mx-auto'>
       <Head title="Catalog" />
-      <div className="h-100 w-full flex flex-col items-center justify-center bg-teal-lightest font-sans">
+      <Logger />
+      <div className="h-100 w-full flex flex-col items-center
+        justify-center bg-teal-lightest font-sans">
         <Header />
         <div className='max-w-screen-lg w-full min-h-screen mx-auto'>
           <Switch>

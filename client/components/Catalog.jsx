@@ -38,6 +38,9 @@ const Catalog = () => {
     })
   }, [page, sort.mode, sort.isDescOrder])
 
+
+
+
   useEffect(() => {
     history.push(`/${page}`)
     console.log(`Effect by page: ${page}`)

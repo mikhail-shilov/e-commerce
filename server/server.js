@@ -76,7 +76,6 @@ server.get('/api/v1/rate', (req, res) => {
 // recive array of { id: [count] } return info about goods in basket and total price
 server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
   const { sort = 'title', desc = false } = req.query
-  console.log(req.query)
   readFile(pathGoods, { encoding: 'utf8' })
     .then((text) => {
       const basket = req.body.items
@@ -122,8 +121,9 @@ server.post('/api/v1/log/', (req, res) => {
       const existingLog = JSON.parse(text)
       writeFile(pathLog, JSON.stringify([...existingLog, newRecord]), { encoding: 'utf8' })
         .then(() => { res.json({ status: 'ok' }) })
-        .catch((err) => { res.json({ status: 'error', message: err }) })
     })
+    .catch((err) => { res.json({ status: 'error', message: err }) })
+
 })
 
 server.delete('/api/v1/log/', (req, res) => {
@@ -131,10 +131,6 @@ server.delete('/api/v1/log/', (req, res) => {
     .then(() => { res.json({ status: 'ok' }) })
     .catch((err) => { res.json({ status: 'error', message: err }) })
 })
-
-
-
-
 
 server.use('/api/', (req, res) => {
   res.status(404)
