@@ -1,7 +1,7 @@
 import * as axios from "axios";
 
-export const recordTypes = {currency: 'currency', add: 'add', remove: 'remove', navigate: 'navigate', sort: 'sort' }
-export const recordConstructor = (type, message) => ({type, message})
+export const recordTypes = { currency: 'currency', add: 'add', remove: 'remove', navigate: 'navigate', sort: 'sort' }
+export const recordConstructor = (type, newValue, oldValue = null , message = null) => ({ type, newValue, oldValue, message })
 
 const eCommerceAPIv1 = axios.create({
     baseURL: '/api/v1/'

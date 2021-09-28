@@ -45,6 +45,19 @@ const sortingGoods = (listOfGoods, sortMode, isDescOrder) => {
   const order = isDescOrder === 'true' ? -1 : 1
   return ([...listOfGoods].sort((a, b) => (a[sortMode] > b[sortMode] ? 1 * order : -1 * order)))
 }
+const titleById = (id) => {
+  return readFile(pathGoods, { encoding: 'utf8' })
+    .then((text) => {
+      const goods = JSON.parse(text)
+      const index = goods.findIndex(record => record.id === id)
+      const { title } = goods[index]
+      return title
+    })
+    .catch((err) => {
+      console.log("error in titleById():")
+      console.log(err)
+    })
+}
 
 server.get(['/api/v1/goods/', '/api/v1/goods/:page'], (req, res) => {
   const { page = 1 } = req.params
@@ -102,34 +115,45 @@ server.post(['/api/v1/total', '/api/v1/basket'], (req, res) => {
     })
 })
 
-server.get('/api/v1/log/', (req, res) => {
+server.get('/api/v1/log/', async (req, res) => {
+  console.log(await titleById('fcf51ea6-c7ec-473c-8769-a45f2d2ffe01'))
+
   readFile(pathLog, { encoding: 'utf8' })
     .then((text) => { res.json(JSON.parse(text)) })
     .catch((err) => { res.json({ status: 'error', message: err }) })
 })
 
 server.post('/api/v1/log/', (req, res) => {
-  const { type, message } = req.body
+  const { type, message, newValue, oldValue } = req.body
+
+  console.log('req.body')
+  console.log(req.body)
+
   const newRecord = {
     id: nanoid(),
     date: new Date(),
     type,
-    message
+    message,
+    newValue,
+    oldValue
   }
   readFile(pathLog, { encoding: 'utf8' })
     .then((text) => {
       const existingLog = JSON.parse(text)
+
+      console.log('Log')
+      console.log(existingLog)
+      console.log(newRecord)
       writeFile(pathLog, JSON.stringify([...existingLog, newRecord]), { encoding: 'utf8' })
         .then(() => { res.json({ status: 'ok' }) })
     })
     .catch((err) => { res.json({ status: 'error', message: err }) })
-
 })
 
 server.delete('/api/v1/log/', (req, res) => {
   writeFile(pathLog, JSON.stringify([]), { encoding: 'utf8' })
     .then(() => { res.json({ status: 'ok' }) })
-    .catch((err) => { res.json({ status: 'error', message: err }) })
+    .catch((err) => { res.json({ status: 'error', message: { ...err } }) })
 })
 
 server.use('/api/', (req, res) => {

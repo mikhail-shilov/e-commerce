@@ -25,40 +25,8 @@ const Logger = () => {
   const location = useLocation()
   useEffect(() => {
     const message = `Navigate path: ${location.pathname}`
-    api.postLog(recordConstructor(recordTypes.navigate, message))
+    api.postLog(recordConstructor(recordTypes.navigate, location.pathname, null, message))
   }, [location])
-
-  // Logging add/remove basket
-  const basketQuanity = useSelector((state) => state.basket.quanity)
-  const prevBasketQuanity = usePrevious(basketQuanity)
-  const basketgoods = useSelector((state) => state.basket.goods)
-  const prevBasketgoods = usePrevious(basketgoods)
-
-  useEffect(() => {
-    const biggestList = basketQuanity > prevBasketQuanity ? [...basketgoods] : [...prevBasketgoods]
-    const smallestList = basketQuanity < prevBasketQuanity ? [...basketgoods] : [...prevBasketgoods]
-
-    console.log('effect')
-
-    const titleOfGood = biggestList.reduce((title, recordOfGood, index) => {
-      console.log(index)
-      console.log(title)
-      console.log(recordOfGood)
-      console.log(biggestList)
-      console.log(smallestList.indexOf(recordOfGood.id))
-
-      // console.log(smallestList.findindex(item => item.id === recordOfGood.id))
-      return ('msg')
-    })
-
-    console.log(titleOfGood)
-    // const message = 'msg'
-
-
-  }, [basketQuanity])
-
-
-
 
   return (null)
 }
