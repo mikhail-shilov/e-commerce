@@ -28,6 +28,8 @@ const Logger = () => {
     api.postLog(recordConstructor(recordTypes.navigate, location.pathname, null, message))
   }, [location])
 
+  // Add and remove - in handlers :(
+
   return (null)
 }
 
