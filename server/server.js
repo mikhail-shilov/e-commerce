@@ -142,10 +142,11 @@ server.post('/api/v1/log/', (req, res) => {
       const existingLog = JSON.parse(text)
 
       console.log('Log')
-      console.log(existingLog)
       console.log(newRecord)
       writeFile(pathLog, JSON.stringify([...existingLog, newRecord]), { encoding: 'utf8' })
         .then(() => { res.json({ status: 'ok' }) })
+        .catch((err) => { console.log(err) })
+
     })
     .catch((err) => { res.json({ status: 'error', message: err }) })
 })
@@ -153,7 +154,10 @@ server.post('/api/v1/log/', (req, res) => {
 server.delete('/api/v1/log/', (req, res) => {
   writeFile(pathLog, JSON.stringify([]), { encoding: 'utf8' })
     .then(() => { res.json({ status: 'ok' }) })
-    .catch((err) => { res.json({ status: 'error', message: { ...err } }) })
+    .catch((err) => {
+      console.log(err)
+      res.json({ status: 'error', message: { ...err } })
+    })
 })
 
 server.use('/api/', (req, res) => {
